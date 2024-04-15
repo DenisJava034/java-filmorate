@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class FilmorateApplicationTests {
 
-
     static FilmController filmController;
     static UserController userController;
     private Validator validator;
@@ -51,7 +50,7 @@ class FilmorateApplicationTests {
     }
 
     @Test
-    void EmptyTitleFilm() {
+    void emptyTitleFilm() {
         final Film film = Film.builder()  // название пустое
                 .name("")
                 .description("Description")
@@ -102,7 +101,7 @@ class FilmorateApplicationTests {
     }
 
     @Test
-    void UserCreateFailEmail() {
+    void userCreateFailEmail() {
 
         final User user = User.builder()
                 .login("dolore")
@@ -168,7 +167,7 @@ class FilmorateApplicationTests {
     }
 
     @Test
-    void UserCreateFailBirthday() {
+    void userCreateFailBirthday() {
 
         final User user = User.builder()
                 .login("dolore")

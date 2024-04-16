@@ -23,14 +23,8 @@ public class UserController {
 
     @PostMapping
     public User createUsers(@Valid @RequestBody User user) {
-        if (user.getName() == null || user.getName().isBlank()) {
-            log.info("Username not specified");
-            user.setName(user.getLogin());
-        }
-        if (user.getLogin().contains(" ")) {
-            log.error("error while building next header {}", user.getLogin());
-            throw new ValidationException("Логин не должен содержать пробелы");
-        }
+        checkLogin(user);
+        checkName(user);
 
         user.setId(getNextId());
         log.debug("The user is assigned id {}", user.getId());
@@ -45,23 +39,17 @@ public class UserController {
             log.error("Id not specified");
             throw new ValidationException("Id должен быть указан");
         }
-        if (users.containsKey(newUser.getId())) {
-            log.debug("user with id {} found", newUser.getId());
-            if (newUser.getName() == null || newUser.getName().isBlank()) {
-                log.info("Username not specified");
-                newUser.setName(newUser.getLogin());
-            }
-            if (newUser.getLogin().contains(" ")) {
-                log.error("login contains spaces - {}", newUser.getLogin());
-                throw new ValidationException("Логин не должен содержать пробелы");
-            }
-            users.put(newUser.getId(), newUser);
-            log.info("Update user");
-            return newUser;
-        }
-        log.error("user with id {} is not equipped", newUser.getId());
-        throw new ValidationException("Пользователь с id = " + newUser.getId() + " не найден");
 
+        if (!users.containsKey(newUser.getId())) {
+            log.error("user with id {} is not equipped", newUser.getId());
+            throw new ValidationException("Пользователь с id = " + newUser.getId() + " не найден");
+        }
+        checkLogin(newUser);
+        log.debug("user with id {} found", newUser.getId());
+        checkName(newUser);
+        users.put(newUser.getId(), newUser);
+        log.info("Update user");
+        return newUser;
     }
 
     private long getNextId() {
@@ -71,5 +59,19 @@ public class UserController {
                 .max()
                 .orElse(0);
         return ++currentMaxId;
+    }
+
+    private void checkLogin(User newUser) {
+        if (newUser.getLogin().contains(" ")) {
+            log.error("login contains spaces - {}", newUser.getLogin());
+            throw new ValidationException("Логин не должен содержать пробелы");
+        }
+    }
+
+    private void checkName(User newUser) {
+        if (newUser.getName() == null || newUser.getName().isBlank()) {
+            log.info("Username not specified");
+            newUser.setName(newUser.getLogin());
+        }
     }
 }

@@ -25,10 +25,8 @@ public class FilmController {
 
     @PostMapping
     public Film createFilms(@Valid @RequestBody Film film) {
-        if (film.getReleaseDate().isBefore(dateOfFirstFilm)) {
-            log.error("Incorrect movie release date - {}", film.getReleaseDate());
-            throw new ValidationException("Дата фильма не может быть раньше 28.12.1895");
-        }
+        checkReleaseDate(film);
+
         film.setId(getNextId());
         log.debug("The film is assigned id {}", film.getId());
         films.put(film.getId(), film);
@@ -42,18 +40,14 @@ public class FilmController {
             log.error("Id not specified");
             throw new ValidationException("Id должен быть указан");
         }
-        if (films.containsKey(newFilm.getId())) {
-
-            if (newFilm.getReleaseDate().isBefore(dateOfFirstFilm)) {
-                log.error("Incorrect movie release date - {}", newFilm.getReleaseDate());
-                throw new ValidationException("Дата фильма не может быть раньше 28.12.1895");
-            }
-            films.put(newFilm.getId(), newFilm);
-            log.info("Update film");
-            return newFilm;
+        if (!films.containsKey(newFilm.getId())) {
+            log.error("Film with id {} is not equipped", newFilm.getId());
+            throw new ValidationException("Фильм с id = " + newFilm.getId() + " не найден");
         }
-        log.error("Film with id {} is not equipped", newFilm.getId());
-        throw new ValidationException("Фильм с id = " + newFilm.getId() + " не найден");
+        checkReleaseDate(newFilm);
+        films.put(newFilm.getId(), newFilm);
+        log.info("Update film");
+        return newFilm;
     }
 
     private long getNextId() {
@@ -63,5 +57,12 @@ public class FilmController {
                 .max()
                 .orElse(0);
         return ++currentMaxId;
+    }
+
+    private void checkReleaseDate(Film newFilm) {
+        if (newFilm.getReleaseDate().isBefore(dateOfFirstFilm)) {
+            log.error("Incorrect movie release date - {}", newFilm.getReleaseDate());
+            throw new ValidationException("Дата фильма не может быть раньше 28.12.1895");
+        }
     }
 }

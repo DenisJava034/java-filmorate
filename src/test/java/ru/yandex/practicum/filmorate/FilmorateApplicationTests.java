@@ -356,7 +356,7 @@ class FilmorateApplicationTests {
     }
 
     @Test
-    void AddUnknownFriend() {
+    void addUnknownFriend() {
         final User user1 = User.builder()
                 .login("Иван")
                 .name("")

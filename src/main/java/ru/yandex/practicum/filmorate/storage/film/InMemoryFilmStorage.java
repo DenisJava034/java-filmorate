@@ -81,7 +81,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Collection<Film> getPopular(Long count) {
-        if(count < 0){
+        if (count < 0) {
             throw new ValidationException("Count должен быть больше 0");
         }
         log.info("Вывод списка {} самых популярных фильмов", count);

@@ -23,7 +23,6 @@ import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,7 +40,6 @@ class FilmorateApplicationTests {
         final FilmStorage storageFilm = new InMemoryFilmStorage(userStorage);
         FilmService filmService = new FilmService(storageFilm);
         filmController = new FilmController(filmService);
-
 
 
         UserService serviceUser = new UserService(userStorage);
@@ -266,7 +264,7 @@ class FilmorateApplicationTests {
     }
 
     @Test
-    void  getPopularFilm (){
+    void getPopularFilm() {
 
         final User user1 = User.builder()
                 .login("Иван")
@@ -505,7 +503,7 @@ class FilmorateApplicationTests {
     }
 
     @Test
-    void findCommonFriends (){
+    void findCommonFriends() {
         final User user1 = User.builder()
                 .login("Иван")
                 .name("")
@@ -543,7 +541,7 @@ class FilmorateApplicationTests {
 
     // test like
     @Test
-    void addLike (){
+    void addLike() {
         final User user1 = User.builder()
                 .login("Иван")
                 .name("")
@@ -566,7 +564,7 @@ class FilmorateApplicationTests {
     }
 
     @Test
-    void addLikeUnknownFilm (){
+    void addLikeUnknownFilm() {
         final User user1 = User.builder()
                 .login("Иван")
                 .name("")
@@ -585,7 +583,7 @@ class FilmorateApplicationTests {
     }
 
     @Test
-    void addLikeUnknownUser (){
+    void addLikeUnknownUser() {
         final Film film = Film.builder()  // название пустое
                 .name("Кино")
                 .description("Description")
@@ -596,7 +594,7 @@ class FilmorateApplicationTests {
 
         Exception exception = assertThrows(
                 NotFoundException.class,
-                () -> filmController.addLikeTheMovie(idFilm , 7L)
+                () -> filmController.addLikeTheMovie(idFilm, 7L)
         );
 
         assertEquals("Пользователь с id = " + 7 + " не найден", exception.getMessage());
@@ -604,7 +602,7 @@ class FilmorateApplicationTests {
     }
 
     @Test
-    void deleteLike (){
+    void deleteLike() {
         final User user1 = User.builder()
                 .login("Иван")
                 .name("")
@@ -625,7 +623,7 @@ class FilmorateApplicationTests {
 
         assertTrue(films.get(0).getLikes().contains(idUser1));
 
-        filmController.removeLikeFilm(idFilm,idUser1);
+        filmController.removeLikeFilm(idFilm, idUser1);
         films = new ArrayList<>(filmController.findAllFilms());
 
         assertFalse(films.get(0).getLikes().contains(idUser1));

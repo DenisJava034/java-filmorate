@@ -62,14 +62,14 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public Collection<User> getFriendList(Long id){
+    public Collection<User> getFriendList(Long id) {
         checkId(id);
         Set<Long> setUser = users.get(id).getFriends();
         if (setUser == null) {
             setUser = new HashSet<>();
         }
         List<User> userList = new ArrayList<>();
-        for(Long idFriend : setUser){
+        for (Long idFriend : setUser) {
             userList.add(users.get(idFriend));
         }
         log.info("Получение списка друзей пользователя с id = {}", id);
@@ -108,7 +108,7 @@ public class InMemoryUserStorage implements UserStorage {
         log.info("Получение общих друзей пользователя с id = {} и пользователя с id = {}", id, otherId);
         friends1.retainAll(friends2); // сохранение одинаковых id
 
-        for(Long idFriend : friends1) {
+        for (Long idFriend : friends1) {
             friendCommon.add(users.get(idFriend));
         }
 

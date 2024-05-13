@@ -68,7 +68,7 @@ public class InMemoryUserStorage implements UserStorage {
         if (setUser == null) {
             setUser = new HashSet<>();
         }
-        List<User> userList = new ArrayList<>();
+        LinkedList<User> userList = new LinkedList<>();
         for (Long idFriend : setUser) {
             userList.add(users.get(idFriend));
         }
@@ -100,7 +100,7 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public Collection<User> findCommonFriends(Long id, Long otherId) {
-        List<User> friendCommon = new ArrayList<>();
+        LinkedList<User> friendCommon = new LinkedList<>();
 
         Set<Long> friends1 = users.get(id).getFriends();
         Set<Long> friends2 = users.get(otherId).getFriends();

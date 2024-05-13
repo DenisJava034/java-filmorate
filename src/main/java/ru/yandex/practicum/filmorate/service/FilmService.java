@@ -15,7 +15,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class FilmService {
     private final FilmStorage storage;
-    private static final LocalDate dateOfFirstFilm = LocalDate.of(1895, 12, 28);
+    private static final LocalDate DATE_OF_FIRST_FILM = LocalDate.of(1895, 12, 28);
 
     public Collection<Film> findAll() {
         return storage.findAllFilms();
@@ -44,7 +44,7 @@ public class FilmService {
     }
 
     private void checkReleaseDate(Film newFilm) {
-        if (newFilm.getReleaseDate().isBefore(dateOfFirstFilm)) {
+        if (newFilm.getReleaseDate().isBefore(DATE_OF_FIRST_FILM)) {
             log.error("Incorrect movie release date - {}", newFilm.getReleaseDate());
             throw new ValidationException("Дата фильма не может быть раньше 28.12.1895");
         }

@@ -1,68 +1,48 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
-import java.time.LocalDate;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private static final LocalDate dateOfFirstFilm = LocalDate.of(1895, 12, 28);
-    private final Map<Long, Film> films = new HashMap<>();
+    private final FilmService service;
 
     @GetMapping
     public Collection<Film> findAllFilms() {
-        return films.values();
+        return service.findAll();
     }
 
     @PostMapping
     public Film createFilms(@Valid @RequestBody Film film) {
-        checkReleaseDate(film);
-
-        film.setId(getNextId());
-        log.debug("The film is assigned id {}", film.getId());
-        films.put(film.getId(), film);
-        log.info("New film created");
-        return film;
+        return service.create(film);
     }
 
     @PutMapping
     public Film updateFilms(@Valid @RequestBody Film newFilm) {
-        if (newFilm.getId() == null) {
-            log.error("Id not specified");
-            throw new ValidationException("Id должен быть указан");
-        }
-        if (!films.containsKey(newFilm.getId())) {
-            log.error("Film with id {} is not equipped", newFilm.getId());
-            throw new ValidationException("Фильм с id = " + newFilm.getId() + " не найден");
-        }
-        checkReleaseDate(newFilm);
-        films.put(newFilm.getId(), newFilm);
-        log.info("Update film");
-        return newFilm;
+        return service.update(newFilm);
     }
 
-    private long getNextId() {
-        long currentMaxId = films.keySet()
-                .stream()
-                .mapToLong(id -> id)
-                .max()
-                .orElse(0);
-        return ++currentMaxId;
+    @PutMapping("/{id}/like/{userId}")
+    public Film addLikeTheMovie(@PathVariable Long id, @PathVariable Long userId) {
+        return service.addLike(id, userId);
     }
 
-    private void checkReleaseDate(Film newFilm) {
-        if (newFilm.getReleaseDate().isBefore(dateOfFirstFilm)) {
-            log.error("Incorrect movie release date - {}", newFilm.getReleaseDate());
-            throw new ValidationException("Дата фильма не может быть раньше 28.12.1895");
-        }
+    @DeleteMapping("/{id}/like/{userId}")
+    public Film removeLikeFilm(@PathVariable Long id, @PathVariable Long userId) {
+        return service.deleteLike(id, userId);
+    }
+
+    @GetMapping("/popular")
+    public Collection<Film> getPopular(@RequestParam(defaultValue = "10") Long count) {
+        return service.getPopular(count);
     }
 }

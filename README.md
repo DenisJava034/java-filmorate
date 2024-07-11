@@ -1,8 +1,6 @@
 # java-filmorate
 Template repository for Filmorate project.
 
-
-
 ![img.png](img.png)
 
 
@@ -40,4 +38,3 @@ SELECT * FROM USERS
 ```sql
 SELECT * FROM USERS WHERE film_id=
 ```
-=======

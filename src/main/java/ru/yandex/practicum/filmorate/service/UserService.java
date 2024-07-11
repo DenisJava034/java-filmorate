@@ -3,65 +3,114 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.builders.BuilderUser;
+import ru.yandex.practicum.filmorate.exception.DuplicatedDataException;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
-import java.util.Collection;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements IntefaceService<User> {
+    private final UserStorage userStorage;
+    private final BuilderUser builderUser;
 
-    private final UserStorage storage;
-
-    public Collection<User> findAll() {
-        return storage.findAllUsers();
+    public List<User> getAll() {
+        return userStorage.findAllUsers();
     }
 
-    public User create(User user) {
-        checkLogin(user);
-        checkName(user);
-        return storage.createUsers(user);
+    public User getById(Long id) {
+        User user = userStorage.getById(id).orElseThrow(() -> new NotFoundException("Нет user с заданным ID"));
+        return builderUser.build(user);
     }
 
-    public User update(User newUser) {
-        checkLogin(newUser);
-        checkName(newUser);
-        return storage.updateUsers(newUser);
+    public List<User> getFriends(Long id) {
+        getById(id);
+        return userStorage.getFriendList(id)
+                .stream()
+                .map(builderUser::build)
+                .collect(Collectors.toList());
     }
 
-    public User addToFriends(Long id, Long friendId) {
-        return storage.addToFriends(id, friendId);
+    public List<User> getCommonFriends(Long userId, long otherId) {
+        return userStorage.findCommonFriends(userId, otherId)
+                .stream()
+                .map(builderUser::build)
+                .collect(Collectors.toList());
     }
 
-    public Collection<User> getFriendList(Long id) {
-        return storage.getFriendList(id);
+    public User create(User data) {
+        validateAll(data);
+        if (data.getName() == null || data.getName().isBlank()) {
+            data.setName(data.getLogin());
+        }
+        log.debug("User создан: " + data);
+        data = userStorage.createUsers(data).get();
+        return getById(data.getId());
     }
 
-    public User deleteFromFriends(Long id, Long friendId) {
-        return storage.deleteFromFriends(id, friendId);
+    public User update(User data) {
+        if (data.getId() == null) {
+            throw new ValidationException("id должен быть указан");
+        }
+        final Optional<User> userOptional = userStorage.getById(data.getId());
+        userOptional.orElseThrow(() -> new NotFoundException("Нет user c id:" + data.getId()));
+        validateBirthday(data);
+        log.debug("User c id: " + data.getId() + " обновлен");
+        return userStorage.updateUsers(data).get();
     }
 
-    public Collection<User> findCommonFriends(Long id, Long otherId) {
-        return storage.findCommonFriends(id, otherId);
+    @Override
+    public void delete() {
+        userStorage.delete();
     }
 
-    private void checkLogin(User newUser) {
-        if (newUser.getLogin().contains(" ")) {
-            log.error("login contains spaces - {}", newUser.getLogin());
-            throw new ValidationException("Логин не должен содержать пробелы");
+    @Override
+    public void deleteById(Long id) {
+        userStorage.deleteById(id);
+    }
+
+    public void addFriend(Long userId, Long friendId) {
+        userStorage.getById(userId);
+        userStorage.getById(friendId);
+        userStorage.addToFriends(userId, friendId);
+    }
+
+    public User deleteFriend(Long userId, Long friendId) {
+        User user = userStorage.getById(userId)
+                .orElseThrow(() -> new NotFoundException("Нет user с ID: " + userId));
+        userStorage.getById(friendId)
+                .orElseThrow(() -> new NotFoundException("Нет friends с ID: " + friendId));
+        userStorage.deleteFromFriends(userId, friendId);
+        return builderUser.build(user);
+    }
+
+    public void validateAll(final User newUser) {
+        validateEmail(newUser);
+        validateBirthday(newUser);
+    }
+
+    public void validateEmail(final User newUser) {
+        if (userStorage.findEmail(newUser)) {
+            final String s = "Этот имейл уже используется";
+            log.info("Вызвано исключение: " + s + " Пришло: " + newUser.getEmail());
+            throw new DuplicatedDataException(s);
         }
     }
 
-    private void checkName(User newUser) {
-        if (newUser.getName() == null || newUser.getName().isBlank()) {
-            log.info("Username not specified");
-            newUser.setName(newUser.getLogin());
+    public void validateBirthday(final User newUser) {
+        if (newUser.getBirthday().isAfter(LocalDate.now())) {
+            final String s = "Дата рождения не может быть в будущем";
+            log.info("Вызвано исключение: " + s + " Пришло: " + newUser.getBirthday());
+            throw new ValidationException(s);
         }
     }
+
 }
-
-
-

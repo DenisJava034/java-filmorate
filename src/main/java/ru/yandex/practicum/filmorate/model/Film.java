@@ -3,17 +3,16 @@ package ru.yandex.practicum.filmorate.model;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-@Builder
 @Data
+@Builder
+@AllArgsConstructor
 public class Film {
     private Long id;
     @NotBlank
@@ -25,6 +24,12 @@ public class Film {
     private int duration;
     @Getter(AccessLevel.NONE)
     private Set<Long> likes;
+    private List<Genre> genres;
+    private Mpa mpa;
+
+    public Film() {
+
+    }
 
     public Set<Long> getLikes() {
         if (likes != null) {

@@ -3,17 +3,15 @@ package ru.yandex.practicum.filmorate.model;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@Builder
 @Data
+@Builder
+@AllArgsConstructor
 public class User {
     private Long id;
     @Email
@@ -26,6 +24,9 @@ public class User {
     private LocalDate birthday;
     @Getter(AccessLevel.NONE)
     private Set<Long> friends;
+
+    public User() {
+    }
 
     public Set<Long> getFriends() {
         if (friends != null) {

@@ -115,12 +115,12 @@ public class DbFilmStorage implements FilmStorage {
                 newFilm.getDuration(),
                 newFilm.getId()
         );
-        return getById(newFilm.getId());
+        return Optional.of(newFilm);
     }
 
     @Override
     public void delete() {
-        jdbcTemplate.update("DELETE FROM films");
+        jdbcTemplate.update("TRUNCATE TABLE films");
     }
 
     @Override

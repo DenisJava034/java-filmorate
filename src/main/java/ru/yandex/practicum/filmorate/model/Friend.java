@@ -8,8 +8,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class Friend {
     @NotNull
-    Long firstId;
+    private Long firstId;
     @NotNull
-    Long secondId;
+    private Long secondId;
 
 }

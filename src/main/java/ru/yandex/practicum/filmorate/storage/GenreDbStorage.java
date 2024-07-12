@@ -56,7 +56,7 @@ public class GenreDbStorage {
     }
 
     public void delete() {
-        jdbcTemplate.update("DELETE FROM genres");
+        jdbcTemplate.update("TRUNCATE TABLE genres");
     }
 
     public void deleteById(Long id) {

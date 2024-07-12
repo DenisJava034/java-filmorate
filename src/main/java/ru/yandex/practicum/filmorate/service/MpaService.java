@@ -12,35 +12,35 @@ import java.util.Collection;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MpaService implements IntefaceService<Mpa> {
+public class MpaService {
     private final MpaDbStorage mpaDbStorage;
 
-    @Override
+
     public Collection<Mpa> getAll() {
         return mpaDbStorage.getAll();
     }
 
-    @Override
+
     public Mpa getById(final Long id) {
         return mpaDbStorage.getById(id).orElseThrow(() -> new NotFoundException("No mpa id = " + id));
     }
 
-    @Override
+
     public Mpa create(final Mpa data) {
         return mpaDbStorage.create(data).get();
     }
 
-    @Override
+
     public Mpa update(final Mpa data) {
         return mpaDbStorage.update(data).get();
     }
 
-    @Override
+
     public void delete() {
         mpaDbStorage.delete();
     }
 
-    @Override
+
     public void deleteById(final Long id) {
         mpaDbStorage.deleteById(id);
     }

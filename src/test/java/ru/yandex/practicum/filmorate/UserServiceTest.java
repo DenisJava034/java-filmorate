@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate;
+package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +12,6 @@ import ru.yandex.practicum.filmorate.builders.BuilderUser;
 import ru.yandex.practicum.filmorate.exception.DuplicatedDataException;
 import ru.yandex.practicum.filmorate.mapper.UserRowMapper;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.user.DbUserStorage;
 
 import java.time.LocalDate;
@@ -93,6 +92,7 @@ class UserServiceTest {
         userService.update(user);
         assertEquals(userService.getById(i).getName(), "newName");
 
+
     }
 
     @Test
@@ -108,7 +108,7 @@ class UserServiceTest {
             userService.addFriend(1L, userId);
             i++;
         } while (i != 9);
-        User user = userService.getById(1L);
+        User user = userService.getById(1);
         Set<Long> longList = user.getFriends();
         assertEquals(longList.size(), 9);
     }
@@ -117,7 +117,7 @@ class UserServiceTest {
     void getCommonFriends() {
         userService.addFriend(1L, 2L);
         userService.addFriend(3L, 2L);
-        assertEquals(userService.getCommonFriends(1L, 3).size(), 1);
+        assertEquals(userService.getCommonFriends(1L, 3L).size(), 1);
     }
 
     @Test

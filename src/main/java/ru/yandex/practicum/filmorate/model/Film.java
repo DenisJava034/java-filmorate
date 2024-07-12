@@ -12,6 +12,7 @@ import java.util.Set;
 
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class Film {
     private Long id;
@@ -27,9 +28,6 @@ public class Film {
     private List<Genre> genres;
     private Mpa mpa;
 
-    public Film() {
-
-    }
 
     public Set<Long> getLikes() {
         if (likes != null) {

@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserService implements IntefaceService<User> {
+public class UserService {
     private final UserStorage userStorage;
     private final BuilderUser builderUser;
 
@@ -26,7 +26,7 @@ public class UserService implements IntefaceService<User> {
         return userStorage.findAllUsers();
     }
 
-    public User getById(Long id) {
+    public User getById(long id) {
         User user = userStorage.getById(id).orElseThrow(() -> new NotFoundException("Нет user с заданным ID"));
         return builderUser.build(user);
     }
@@ -39,7 +39,7 @@ public class UserService implements IntefaceService<User> {
                 .collect(Collectors.toList());
     }
 
-    public List<User> getCommonFriends(Long userId, long otherId) {
+    public List<User> getCommonFriends(Long userId, Long otherId) {
         return userStorage.findCommonFriends(userId, otherId)
                 .stream()
                 .map(builderUser::build)
@@ -67,12 +67,12 @@ public class UserService implements IntefaceService<User> {
         return userStorage.updateUsers(data).get();
     }
 
-    @Override
+
     public void delete() {
         userStorage.delete();
     }
 
-    @Override
+
     public void deleteById(Long id) {
         userStorage.deleteById(id);
     }

@@ -8,11 +8,11 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Mpa {
-    Long id;
+    private Long id;
     @NotNull
     @NotBlank
-    String name;
-    String description;
+    private String name;
+    private String description;
 
 
 }

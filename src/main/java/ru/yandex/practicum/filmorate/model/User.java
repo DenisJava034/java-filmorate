@@ -12,6 +12,7 @@ import java.util.Set;
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class User {
     private Long id;
     @Email
@@ -24,9 +25,6 @@ public class User {
     private LocalDate birthday;
     @Getter(AccessLevel.NONE)
     private Set<Long> friends;
-
-    public User() {
-    }
 
     public Set<Long> getFriends() {
         if (friends != null) {

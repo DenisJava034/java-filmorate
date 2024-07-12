@@ -16,10 +16,7 @@ import java.util.Collection;
 @Slf4j
 public class UserController {
 
-    private UserService userService;
-
-    public UserController() {
-    }
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService) {

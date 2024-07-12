@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class FilmService implements IntefaceService<Film> {
+public class FilmService {
     private static final LocalDate DATE_MARK = LocalDate.of(1895, 12, 28);
     private final FilmStorage filmStorage;
     private final UserService userService;
@@ -111,24 +111,24 @@ public class FilmService implements IntefaceService<Film> {
         return builderFilm.build(filmStorage.updateFilms(data).get());
     }
 
-    @Override
+
     public void delete() {
         filmStorage.delete();
     }
 
-    @Override
+
     public void deleteById(Long id) {
         filmStorage.deleteById(id);
     }
 
-    public Film addLike(long filmId, long userId) {
+    public Film addLike(Long filmId, Long userId) {
         Film film = getById(filmId);
         userService.getById(userId);
         filmStorage.addLike(filmId, userId);
         return getById(filmId);
     }
 
-    public Optional<Film> deleteLike(long filmId, long userId) {
+    public Optional<Film> deleteLike(Long filmId, Long userId) {
         getById(filmId);
         userService.getById(userId);
         filmId = filmStorage.deleteLike(filmId, userId).get().getId();

@@ -8,8 +8,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class Like {
     @NotNull
-    Long id;
+    private Long id;
     @NotNull
-    Long userId;
+    private Long userId;
 
 }

@@ -36,6 +36,24 @@ values('user2@jhbb.ru', 'user1', 'User1', '2024-12-01');
 insert into USERS
 (EMAIL, LOGIN, NAME, BIRTHDAY)
 values('user3@jhbb.ru', 'user1', 'User1', '2024-12-01');
+insert into USERS
+(EMAIL, LOGIN, NAME, BIRTHDAY)
+values('user1@jhbb.ru', 'user1', 'User1', '2024-12-01');
+insert into USERS
+(EMAIL, LOGIN, NAME, BIRTHDAY)
+values('user2@jhbb.ru', 'user1', 'User1', '2024-12-01');
+insert into USERS
+(EMAIL, LOGIN, NAME, BIRTHDAY)
+values('user3@jhbb.ru', 'user1', 'User1', '2024-12-01');
+insert into USERS
+(EMAIL, LOGIN, NAME, BIRTHDAY)
+values('user1@jhbb.ru', 'user1', 'User1', '2024-12-01');
+insert into USERS
+(EMAIL, LOGIN, NAME, BIRTHDAY)
+values('user2@jhbb.ru', 'user1', 'User1', '2024-12-01');
+insert into USERS
+(EMAIL, LOGIN, NAME, BIRTHDAY)
+values('user3@jhbb.ru', 'user1', 'User1', '2024-12-01');
 
 insert into FILMS
 (NAME, DESCRIPTION, RELEASE_DATE, DURATION, FILM_RATING)

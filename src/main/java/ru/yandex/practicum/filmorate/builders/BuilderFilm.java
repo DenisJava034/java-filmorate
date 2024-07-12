@@ -19,13 +19,13 @@ import java.util.Set;
 public class BuilderFilm {
     private final JdbcTemplate jdbcTemplate;
 
-    static Genre makeGenre(ResultSet rs, int rowNum) throws SQLException {
+    private static Genre makeGenre(ResultSet rs, int rowNum) throws SQLException {
         return new Genre(
                 rs.getLong("genre_id"),
                 rs.getString("name"));
     }
 
-    static FilmJoinGenre makeFilmJoinGenre(ResultSet rs, int rowNum) throws SQLException {
+   private static FilmJoinGenre makeFilmJoinGenre(ResultSet rs, int rowNum) throws SQLException {
         FilmJoinGenre filmJoinGenre = new FilmJoinGenre(
                 rs.getLong("film_id"),
                 rs.getLong("genre_id"),

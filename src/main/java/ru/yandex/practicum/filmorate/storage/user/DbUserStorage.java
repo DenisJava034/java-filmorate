@@ -32,7 +32,7 @@ public class DbUserStorage implements UserStorage {
     }
 
     @Override
-    public Optional<User> getById(Long id) {
+    public Optional<User> getById(long id) {
         String query = "SELECT * FROM USERS WHERE user_id = ?";
         final List<User> users = jdbcTemplate.query(query, mapper, id);
         if (users.size() == 0) {
@@ -55,6 +55,7 @@ public class DbUserStorage implements UserStorage {
             stmt.setDate(4, Date.valueOf(user.getBirthday()));
             return stmt;
         }, keyHolder);
+
         return getById(keyHolder.getKey().longValue());
     }
 
@@ -70,7 +71,7 @@ public class DbUserStorage implements UserStorage {
                 user.getBirthday(),
                 user.getId()
         );
-        return getById(user.getId());
+        return Optional.of(user);
     }
 
     @Override
@@ -120,7 +121,7 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public void delete() {
-        jdbcTemplate.update("DELETE FROM users");
+        jdbcTemplate.update("TRUNCATE TABLE users");
     }
 
     @Override

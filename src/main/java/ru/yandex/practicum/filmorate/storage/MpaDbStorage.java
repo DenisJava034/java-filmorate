@@ -55,7 +55,7 @@ public class MpaDbStorage {
     }
 
     public void delete() {
-        jdbcTemplate.update("DELETE FROM film_rating");
+        jdbcTemplate.update("TRUNCATE TABLE film_rating");
     }
 
     public void deleteById(long id) {

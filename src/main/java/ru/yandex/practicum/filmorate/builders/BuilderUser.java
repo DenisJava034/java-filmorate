@@ -16,9 +16,9 @@ import java.util.Set;
 @Component
 @AllArgsConstructor
 public class BuilderUser {
-    JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    public Set<Long> getUserFriends(Long id) {
+    private Set<Long> getUserFriends(Long id) {
         String query = "SELECT * FROM friends WHERE user_id=?";
         Set<Long> set = new HashSet<>();
         List<Friend> friends = jdbcTemplate.query(query, BuilderUser::makeFriend, id);
@@ -28,7 +28,7 @@ public class BuilderUser {
         return set;
     }
 
-    static Friend makeFriend(ResultSet rs, int rowNum) throws SQLException {
+    private static Friend makeFriend(ResultSet rs, int rowNum) throws SQLException {
         return new Friend(
                 rs.getLong("user_id"),
                 rs.getLong("friend_id"));

@@ -92,7 +92,6 @@ class UserServiceTest {
         userService.update(user);
         assertEquals(userService.getById(i).getName(), "newName");
 
-
     }
 
     @Test

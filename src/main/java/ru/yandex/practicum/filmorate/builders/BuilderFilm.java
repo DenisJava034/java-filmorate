@@ -34,7 +34,6 @@ public class BuilderFilm {
         return filmJoinGenre;
     }
 
-
     static Like makeLike(ResultSet rs, int rowNum) throws SQLException {
         return new Like(
                 rs.getLong("film_id"),

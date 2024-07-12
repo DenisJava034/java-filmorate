@@ -20,18 +20,19 @@ public class ListGenreDbStorage {
                 "(FILM_ID, GENRE_ID) " +
                 "VALUES (?, ?)";
         jdbcTemplate.batchUpdate(query,
-                new BatchPreparedStatementSetter(){
+                new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
                         Genre g = film.getGenres().get(i);
                         ps.setLong(1, id);
                         ps.setLong(2, g.getId());
                     }
+
                     @Override
                     public int getBatchSize() {
                         return film.getGenres().size();
                     }
                 }
-                );
+        );
     }
 }

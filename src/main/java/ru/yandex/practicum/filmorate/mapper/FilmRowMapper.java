@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 
 @Component
 @AllArgsConstructor
-public class FilmRowMapper implements RowMapper<Film> {
+ class FilmRowMapper implements RowMapper<Film> {
 
     @Override
     public Film mapRow(ResultSet rs, int rowNum) throws SQLException {

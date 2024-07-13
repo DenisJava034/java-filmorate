@@ -1,8 +1,7 @@
 # java-filmorate
 Template repository for Filmorate project.
 
-
-![img.png](img.png)
+![img_2.png](img_2.png)
 
 
 The diagram shows the relationships between the SQL tables in the application

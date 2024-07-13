@@ -27,7 +27,6 @@ public class ListGenreDbStorage {
                         ps.setLong(1, id);
                         ps.setLong(2, g.getId());
                     }
-
                     @Override
                     public int getBatchSize() {
                         return film.getGenres().size();

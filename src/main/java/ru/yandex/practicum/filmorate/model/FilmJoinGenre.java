@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class FilmJoinGenre {
-    private long filmId;
+    private Long filmId;
     private Long id;
     private String name;
 }

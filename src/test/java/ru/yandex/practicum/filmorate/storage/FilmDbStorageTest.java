@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate;
+package ru.yandex.practicum.filmorate.storage;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
@@ -7,9 +7,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
-import ru.yandex.practicum.filmorate.mapper.UserRowMapper;
-import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.user.DbUserStorage;
+import ru.yandex.practicum.filmorate.storage.film.FilmRowMapper;
+import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.film.DbFilmStorage;
 
 import java.util.Optional;
 
@@ -18,15 +18,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @JdbcTest
 @AutoConfigureTestDatabase
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@ContextConfiguration(classes = {DbUserStorage.class, UserRowMapper.class})
-class UserDbStorageTest {
-    private final DbUserStorage userDbStorage;
+@ContextConfiguration(classes = {DbFilmStorage.class, FilmRowMapper.class})
+class FilmDbStorageTest {
+    private final DbFilmStorage filmStorage;
 
     @Test
     @Sql(scripts = {"/dataTest.sql"})
     public void getById() {
 
-        Optional<User> optional = userDbStorage.getById(1L);
+        Optional<Film> optional = filmStorage.getById(1L);
 
         assertThat(optional)
                 .isPresent()

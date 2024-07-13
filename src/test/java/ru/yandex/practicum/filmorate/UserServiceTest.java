@@ -96,7 +96,8 @@ class UserServiceTest {
 
     @Test
     void getAll() {
-        assertEquals(userService.getAll().size(), 12);
+        assertEquals(userService.getAll().size(), 18
+        );
     }
 
     @Test
